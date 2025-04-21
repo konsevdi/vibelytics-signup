@@ -5,46 +5,95 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Join Vibelytics</title>
+
+  <!-- Satoshi Font from Fontshare -->
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
   <style>
-    body {
-      background: #0f0f1a;
-      color: #fff;
-      font-family: 'Helvetica Neue', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Satoshi', sans-serif;
+      background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+      overflow: hidden;
     }
+
+    .waves {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: url('https://www.transparenttextures.com/patterns/graphy-dark.png') repeat;
+      opacity: 0.04;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      z-index: -1;
+    }
+
     .card {
-      background: rgba(255, 255, 255, 0.05);
+      max-width: 420px;
+      width: 90%;
+      margin: 80px auto;
+      background: rgba(255, 255, 255, 0.06);
       padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(225, 0, 255, 0.2);
-      max-width: 400px;
-      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 0 80px rgba(225, 0, 255, 0.2);
       text-align: center;
+      backdrop-filter: blur(10px);
+      color: #fff;
     }
-    input[type="email"] {
+
+    h1 {
+      font-size: 28px;
+      background: linear-gradient(90deg, #e100ff, #7f00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      font-size: 15px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    input[type="email"], input[type="text"] {
       width: 100%;
-      padding: 12px;
-      margin-top: 20px;
+      padding: 14px;
+      margin-top: 12px;
+      margin-bottom: 16px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 16px;
     }
+
+    input[name="bot-field"] {
+      display: none;
+    }
+
     button {
-      margin-top: 20px;
-      padding: 12px 20px;
+      padding: 14px 22px;
       background: #e100ff;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 16px;
+      font-weight: 600;
       color: #fff;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
+
+    button:hover {
+      background: #c700e0;
+    }
+
     #message {
       margin-top: 20px;
       font-size: 14px;
@@ -52,30 +101,58 @@
   </style>
 </head>
 <body>
+  <div class="waves"></div>
+  <div id="particles-js"></div>
+
   <div class="card">
-    <h1>Join Vibelytics</h1>
-    <input type="email" id="email" placeholder="Enter your email" />
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAABQ5t8TK_vdO79ZT" data-theme="dark"></div>
-    <button onclick="signUp()">Join</button>
+    <h1>You're In 🎉</h1>
+    <p>Join the Vibelytics early access list<br>and feel the future of live events.</p>
+    <input type="email" id="email" placeholder="Enter your email" required />
+    <input type="text" name="bot-field" id="bot-field" />
+    <button onclick="signUp()">Join Now</button>
     <div id="message"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 60, "density": { "enable": true, "value_area": 800 }},
+        "color": { "value": "#e100ff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.15 },
+        "size": { "value": 3 },
+        "move": { "enable": true, "speed": 1 }
+      },
+      "interactivity": {
+        "events": { "onhover": { "enable": true, "mode": "repulse" }},
+        "modes": { "repulse": { "distance": 100 } }
+      },
+      "retina_detect": true
+    });
+  </script>
+
   <script>
     const SUPABASE_URL = 'https://nwxjvaayxsizcqseefgr.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53eGp2YWF5eHNpemNxc2VlZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwOTQ4MzQsImV4cCI6MjA2MDY3MDgzNH0.J3KLrDPazt1-3Oz9pnGRLTp7JSHv5NYQznJF4IICNqQ'; // Replace this in your actual deployment
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53eGp2YWF5eHNpemNxc2VlZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwOTQ4MzQsImV4cCI6MjA2MDY3MDgzNH0.J3KLrDPazt1-3Oz9pnGRLTp7JSHv5NYQznJF4IICNqQ'; // Replace before deploying
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     async function signUp() {
       const email = document.getElementById("email").value;
+      const botTrap = document.getElementById("bot-field").value;
       const message = document.getElementById("message");
-      const token = document.querySelector('[name="cf-turnstile-response"]').value;
       message.textContent = "";
+
+      if (botTrap !== "") {
+        message.textContent = "❌ Bot detected.";
+        message.style.color = "#ff5555";
+        return;
+      }
 
       const { error } = await supabase.auth.signUp({
         email,
         options: {
-          emailRedirectTo: 'https://confirm.vibelytics.ai',
-          captchaToken: token
+          emailRedirectTo: 'https://confirm.vibelytics.ai'
         }
       });
 
