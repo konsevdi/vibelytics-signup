@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Join Vibelytics</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     body {
       background: #0f0f1a;
@@ -54,6 +55,7 @@
   <div class="card">
     <h1>Join Vibelytics</h1>
     <input type="email" id="email" placeholder="Enter your email" />
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAABQ5t8TK_vdO79ZT" data-theme="dark"></div>
     <button onclick="signUp()">Join</button>
     <div id="message"></div>
   </div>
@@ -66,12 +68,14 @@
     async function signUp() {
       const email = document.getElementById("email").value;
       const message = document.getElementById("message");
+      const token = document.querySelector('[name="cf-turnstile-response"]').value;
       message.textContent = "";
 
       const { error } = await supabase.auth.signUp({
         email,
         options: {
-          emailRedirectTo: 'https://confirm.vibelytics.ai'
+          emailRedirectTo: 'https://confirm.vibelytics.ai',
+          captchaToken: token
         }
       });
 
