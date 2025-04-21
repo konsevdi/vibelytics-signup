@@ -3,17 +3,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Join Vibelytics</title>
 
-  <!-- Satoshi Font (Full weights) -->
+  <!-- Font and Libraries -->
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
-
-  <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
-  <!-- Simple Analytics -->
   <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-  <!-- Particles.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
   <style>
@@ -24,47 +20,50 @@
       font-family: 'Satoshi', sans-serif;
       background: #0f0f1a;
       overflow: hidden;
+      box-sizing: border-box;
     }
 
-    .animated-bg {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(-45deg, #2d006b, #3f0080, #6e00a5, #49007e);
-      background-size: 600% 600%;
-      animation: gradientShift 20s ease infinite;
-      z-index: -2;
-    }
-
-    @keyframes gradientShift {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-
-    #particles-js {
+    .waves {
       position: fixed;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
+      z-index: -2;
+      background: linear-gradient(-45deg, #300060, #44007c, #6f00b8, #3f0075);
+      background-size: 800% 800%;
+      animation: shimmerWave 18s ease infinite;
+    }
+
+    @keyframes shimmerWave {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
       z-index: -1;
     }
 
     .card {
       max-width: 420px;
       width: 90%;
-      margin: 80px auto;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 40px;
+      margin: 10vh auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 32px 24px;
       border-radius: 16px;
-      box-shadow: 0 0 60px rgba(225, 0, 255, 0.15);
+      box-shadow: 0 0 80px rgba(225, 0, 255, 0.2);
       text-align: center;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px);
       color: #fff;
+      box-sizing: border-box;
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 24px;
       background: linear-gradient(90deg, #e100ff, #7f00ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -72,19 +71,29 @@
     }
 
     p {
-      font-size: 15px;
+      font-size: 14px;
       color: #ccc;
       margin-bottom: 20px;
     }
 
+    input[type="email"],
+    input[type="text"],
+    ::placeholder,
+    button {
+      font-family: 'Satoshi', sans-serif;
+    }
+
     input[type="email"], input[type="text"] {
       width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      margin-bottom: 16px;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 14px;
       border: none;
       border-radius: 8px;
       font-size: 16px;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      box-sizing: border-box;
     }
 
     input[name="bot-field"] {
@@ -92,8 +101,8 @@
     }
 
     button {
-      padding: 14px 22px;
-      background: #e100ff;
+      padding: 14px 20px;
+      background: linear-gradient(90deg, #e100ff, #7f00ff);
       border: none;
       border-radius: 8px;
       font-size: 16px;
@@ -101,25 +110,36 @@
       color: #fff;
       cursor: pointer;
       transition: all 0.3s ease;
+      box-shadow: 0 0 12px rgba(225, 0, 255, 0.3);
     }
 
     button:hover {
-      background: #c700e0;
+      box-shadow: 0 0 20px rgba(225, 0, 255, 0.6);
+      background: linear-gradient(90deg, #d000f3, #6200ff);
     }
 
     #message {
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 14px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .card {
+        margin-top: 15vh;
+        padding: 28px 20px;
+      }
+      h1 { font-size: 22px; }
+      p { font-size: 13px; }
     }
   </style>
 </head>
 <body>
-  <div class="animated-bg"></div>
+  <div class="waves"></div>
   <div id="particles-js"></div>
 
   <div class="card">
     <h1>Join the Vibelytics List</h1>
-    <p>Be the first to access real-time emotional analytics for live experiences.</p>
+    <p>Be the first to access emotion-powered live event insights.</p>
     <input type="email" id="email" placeholder="Enter your email" required />
     <input type="text" name="bot-field" id="bot-field" />
     <button onclick="signUp()">Join Now</button>
@@ -129,12 +149,12 @@
   <script>
     particlesJS("particles-js", {
       "particles": {
-        "number": { "value": 70, "density": { "enable": true, "value_area": 800 }},
+        "number": { "value": 65, "density": { "enable": true, "value_area": 800 }},
         "color": { "value": "#e100ff" },
         "shape": { "type": "circle" },
-        "opacity": { "value": 0.14 },
+        "opacity": { "value": 0.1 },
         "size": { "value": 3 },
-        "move": { "enable": true, "speed": 1.5 }
+        "move": { "enable": true, "speed": 1.4 }
       },
       "interactivity": {
         "events": { "onhover": { "enable": true, "mode": "repulse" }},
