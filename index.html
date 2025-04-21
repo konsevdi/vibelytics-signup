@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join Vibelytics</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <style>
+    body {
+      background: #0f0f1a;
+      color: #fff;
+      font-family: 'Helvetica Neue', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(225, 0, 255, 0.2);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #e100ff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Join Vibelytics</h1>
+    <input type="email" id="email" placeholder="Enter your email" />
+    <button onclick="signUp()">Join</button>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://nwxjvaayxsizcqseefgr.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53eGp2YWF5eHNpemNxc2VlZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwOTQ4MzQsImV4cCI6MjA2MDY3MDgzNH0.J3KLrDPazt1-3Oz9pnGRLTp7JSHv5NYQznJF4IICNqQ'; // Replace this in your actual deployment
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function signUp() {
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message");
+      message.textContent = "";
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        options: {
+          emailRedirectTo: 'https://confirm.vibelytics.ai'
+        }
+      });
+
+      if (error) {
+        message.textContent = "❌ " + error.message;
+        message.style.color = "#ff5555";
+      } else {
+        message.textContent = "✅ You’re in! Check your inbox to confirm.";
+        message.style.color = "#66ff99";
+      }
+    }
+  </script>
+</body>
+</html>
