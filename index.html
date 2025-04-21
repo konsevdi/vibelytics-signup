@@ -6,10 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Join Vibelytics</title>
 
-  <!-- Satoshi Font from Fontshare -->
+  <!-- Satoshi Font -->
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,600&display=swap" rel="stylesheet">
+  <!-- Supabase & Simple Analytics -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
   <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
   <style>
     html, body {
       margin: 0;
@@ -20,14 +24,20 @@
       overflow: hidden;
     }
 
-    .waves {
+    .background-svg {
       position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       z-index: -2;
-      background: url('https://www.transparenttextures.com/patterns/graphy-dark.png') repeat;
-      opacity: 0.04;
+      background: linear-gradient(135deg, #240046, #3c096c);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     #particles-js {
@@ -45,17 +55,18 @@
       background: rgba(255, 255, 255, 0.06);
       padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 0 80px rgba(225, 0, 255, 0.2);
+      box-shadow: 0 0 60px rgba(225, 0, 255, 0.15);
       text-align: center;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       color: #fff;
     }
 
     h1 {
-      font-size: 28px;
+      font-size: 26px;
       background: linear-gradient(90deg, #e100ff, #7f00ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
     }
 
     p {
@@ -101,28 +112,27 @@
   </style>
 </head>
 <body>
-  <div class="waves"></div>
+  <div class="background-svg"></div>
   <div id="particles-js"></div>
 
   <div class="card">
-    <h1>You're In 🎉</h1>
-    <p>Join the Vibelytics early access list<br>and feel the future of live events.</p>
+    <h1>Join the Vibelytics List</h1>
+    <p>Get early access to emotion-powered insights<br>for artists, producers, and culture makers.</p>
     <input type="email" id="email" placeholder="Enter your email" required />
     <input type="text" name="bot-field" id="bot-field" />
     <button onclick="signUp()">Join Now</button>
     <div id="message"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
     particlesJS("particles-js", {
       "particles": {
         "number": { "value": 60, "density": { "enable": true, "value_area": 800 }},
         "color": { "value": "#e100ff" },
         "shape": { "type": "circle" },
-        "opacity": { "value": 0.15 },
+        "opacity": { "value": 0.12 },
         "size": { "value": 3 },
-        "move": { "enable": true, "speed": 1 }
+        "move": { "enable": true, "speed": 1.2 }
       },
       "interactivity": {
         "events": { "onhover": { "enable": true, "mode": "repulse" }},
@@ -134,7 +144,7 @@
 
   <script>
     const SUPABASE_URL = 'https://nwxjvaayxsizcqseefgr.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53eGp2YWF5eHNpemNxc2VlZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwOTQ4MzQsImV4cCI6MjA2MDY3MDgzNH0.J3KLrDPazt1-3Oz9pnGRLTp7JSHv5NYQznJF4IICNqQ'; // Replace before deploying
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53eGp2YWF5eHNpemNxc2VlZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwOTQ4MzQsImV4cCI6MjA2MDY3MDgzNH0.J3KLrDPazt1-3Oz9pnGRLTp7JSHv5NYQznJF4IICNqQ'; // Replace before deployment
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     async function signUp() {
@@ -151,6 +161,7 @@
 
       const { error } = await supabase.auth.signUp({
         email,
+        password: '', // prevent Supabase from requiring a password
         options: {
           emailRedirectTo: 'https://confirm.vibelytics.ai'
         }
@@ -160,7 +171,7 @@
         message.textContent = "❌ " + error.message;
         message.style.color = "#ff5555";
       } else {
-        message.textContent = "✅ You’re in! Check your inbox to confirm.";
+        message.textContent = "✅ Check your inbox to confirm your signup.";
         message.style.color = "#66ff99";
       }
     }
